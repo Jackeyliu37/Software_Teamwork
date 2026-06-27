@@ -1,0 +1,2 @@
+{"file": ".trellis/spec/guides/index.md", "reason": "Use project thinking guides for documentation changes that define a cross-team feature boundary."}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "AI agent integration is a cross-boundary data contract between the report-generation module and another team's service."}
