@@ -71,3 +71,36 @@ Generated a Markdown requirements analysis from the report generation requiremen
 ### Next Steps
 
 - None - task complete
+
+
+## Session 3: Narrow report generation scope
+
+**Date**: 2026-06-27
+**Task**: Narrow report generation scope
+**Branch**: `docs/add-report-generation-document`
+
+### Summary
+
+Updated the requirements analysis to focus on the team's report-generation scope and removed login/registration plus model-configuration work from in-scope requirements.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `7ae1bed` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
