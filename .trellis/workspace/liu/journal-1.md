@@ -104,3 +104,36 @@ Updated the requirements analysis to focus on the team's report-generation scope
 ### Next Steps
 
 - None - task complete
+
+
+## Session 4: Add AI agent integration requirements
+
+**Date**: 2026-06-27
+**Task**: Add AI agent integration requirements
+**Branch**: `docs/add-report-generation-document`
+
+### Summary
+
+Updated report-generation requirements to clarify external AI agent ownership, one-click outline/document generation modes, integration request/response contract, mock support, risks, acceptance checklist, and development split.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e04d123` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
