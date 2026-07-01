@@ -18,7 +18,11 @@ import {
   useModelProfiles,
   useUpdateModelProfile,
 } from '@/features/admin-config'
-import type { CreateModelProfileRequest, ModelProfile } from '@/lib/types'
+import type {
+  CreateModelProfileRequest,
+  ModelProfile,
+  UpdateModelProfileRequest,
+} from '@/lib/types'
 
 // ── Constants ──
 
@@ -59,6 +63,8 @@ interface FormData {
   maxTokens: number
   dimension: number
   topN: number
+  enabled: boolean
+  isDefault: boolean
   supportsStreaming: boolean
 }
 
@@ -80,6 +86,8 @@ const EMPTY_FORM: FormData = {
   maxTokens: 0,
   dimension: 0,
   topN: 0,
+  enabled: true,
+  isDefault: false,
   supportsStreaming: false,
 }
 
@@ -97,18 +105,20 @@ function formToCreateRequest(form: FormData): CreateModelProfileRequest {
     defaultParameters: { max_tokens: form.maxTokens },
     ...(form.purpose === 'embedding' && form.dimension > 0 ? { dimensions: form.dimension } : {}),
     ...(form.purpose === 'rerank' && form.topN > 0 ? { topN: form.topN } : {}),
-    enabled: true,
-    isDefault: false,
+    enabled: form.enabled,
+    isDefault: form.isDefault,
     supportsStreaming: form.supportsStreaming,
   } as CreateModelProfileRequest
 }
 
-function formToUpdateRequest(form: FormData) {
-  const params: Record<string, unknown> = {
+function formToUpdateRequest(form: FormData): UpdateModelProfileRequest {
+  const params: UpdateModelProfileRequest = {
     name: form.name,
-    provider: form.provider,
+    provider: form.provider as UpdateModelProfileRequest['provider'],
     baseUrl: form.baseUrl,
     model: form.model,
+    enabled: form.enabled,
+    isDefault: form.isDefault,
     timeoutMs: form.timeoutMs,
   }
   if (form.apiKey) {
@@ -214,6 +224,8 @@ export function ModelProfilesPage() {
       maxTokens: (profile.defaultParameters?.max_tokens as number) ?? 0,
       dimension: (profile.dimensions as number) ?? 0,
       topN: (profile.topN as number) ?? 0,
+      enabled: profile.enabled,
+      isDefault: profile.isDefault,
       supportsStreaming: profile.supportsStreaming,
     })
     setEditOpen(true)
@@ -383,11 +395,14 @@ export function ModelProfilesPage() {
                     )}
                   </td>
                   <td className="px-4 py-2.5">
-                    {profile.enabled ? (
-                      <Badge variant="default">启用</Badge>
-                    ) : (
-                      <Badge variant="secondary">禁用</Badge>
-                    )}
+                    <div className="flex flex-wrap gap-1">
+                      {profile.enabled ? (
+                        <Badge variant="default">启用</Badge>
+                      ) : (
+                        <Badge variant="secondary">禁用</Badge>
+                      )}
+                      {profile.isDefault && <Badge variant="outline">默认</Badge>}
+                    </div>
                   </td>
                   <td className="px-4 py-2.5">
                     <div className="flex items-center justify-end gap-1">
@@ -519,6 +534,26 @@ export function ModelProfilesPage() {
                 value={form.model}
                 onChange={(e) => updateField('model', e.target.value)}
               />
+            </div>
+
+            {/* Status controls */}
+            <div className="grid gap-2 sm:grid-cols-2">
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.enabled}
+                  onChange={(e) => updateField('enabled', e.target.checked)}
+                />
+                启用
+              </label>
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.isDefault}
+                  onChange={(e) => updateField('isDefault', e.target.checked)}
+                />
+                设为默认模型
+              </label>
             </div>
 
             {/* Conditional: supportsStreaming (chat) */}
@@ -748,6 +783,26 @@ export function ModelProfilesPage() {
                 value={form.model}
                 onChange={(e) => updateField('model', e.target.value)}
               />
+            </div>
+
+            {/* Status controls */}
+            <div className="grid gap-2 sm:grid-cols-2">
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.enabled}
+                  onChange={(e) => updateField('enabled', e.target.checked)}
+                />
+                启用
+              </label>
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.isDefault}
+                  onChange={(e) => updateField('isDefault', e.target.checked)}
+                />
+                设为默认模型
+              </label>
             </div>
 
             {/* Conditional: supportsStreaming (chat) */}
